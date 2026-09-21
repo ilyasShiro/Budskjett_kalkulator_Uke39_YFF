@@ -1,11 +1,118 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="no">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Budskjett_kalkulator</title>
+
+    <title>Min Økonomi</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    
+
+    <header>
+        <h1>Min Økonomi</h1>
+        <p>Få oversikt over inntektene og utgiftene dine</p>
+    </header>
+
+    <main>
+
+        <section class="summary">
+
+            <div class="summary-card">
+                <h2>Inntekter</h2>
+                <p id="totalIncome">0 kr</p>
+            </div>
+
+            <div class="summary-card">
+                <h2>Utgifter</h2>
+                <p id="totalExpenses">0 kr</p>
+            </div>
+
+            <div class="summary-card balance-card">
+                <h2>Saldo</h2>
+                <p id="balance">0 kr</p>
+            </div>
+
+        </section>
+
+
+        <section class="forms">
+
+            <div class="form-card">
+
+                <h2>Legg til inntekt</h2>
+
+                <input
+                    type="text"
+                    id="incomeName"
+                    placeholder="F.eks. Lønn"
+                >
+
+                <input
+                    type="number"
+                    id="incomeAmount"
+                    placeholder="Beløp"
+                >
+
+                <button onclick="addIncome()">
+                    Legg til inntekt
+                </button>
+
+            </div>
+
+
+            <div class="form-card">
+
+                <h2>Legg til utgift</h2>
+
+                <input
+                    type="text"
+                    id="expenseName"
+                    placeholder="F.eks. Mat"
+                >
+
+                <input
+                    type="number"
+                    id="expenseAmount"
+                    placeholder="Beløp"
+                >
+
+                <button onclick="addExpense()">
+                    Legg til utgift
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <section class="lists">
+
+            <div class="list-card">
+
+                <h2>Inntekter</h2>
+
+                <ul id="incomeList"></ul>
+
+            </div>
+
+
+            <div class="list-card">
+
+                <h2>Utgifter</h2>
+
+                <ul id="expenseList"></ul>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="script.js"></script>
+
 </body>
 </html>
