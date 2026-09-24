@@ -1,138 +1,193 @@
+
 /*
-    Disse to listene skal lagre det brukeren legger inn.
-
-    incomes = alle inntekter
-    expenses = alle utgifter
-
-    [] betyr at listene starter tomme.
+    Her lagres alle inntektene brukeren
+    legger inn.
 */
-
 let incomes = [];
 let expenses = [];
 
+function saveData() {
+
+    localStorage.setItem(
+        "incomes",
+        JSON.stringify(incomes)
+    );
 
 
-/*
-    Denne funksjonen brukes når brukeren
-    trykker på "Legg til inntekt".
-*/
+    localStorage.setItem(
+        "expenses",
+        JSON.stringify(expenses)
+    );
+}
+
+
+
+function loadData() {
+
+    const savedIncomes =
+        localStorage.getItem("incomes");
+
+
+  
+    const savedExpenses =
+        localStorage.getItem("expenses");
+
+
+
+    
+    if (savedIncomes) {
+
+        incomes = JSON.parse(savedIncomes);
+    }
+
+
+   
+    if (savedExpenses) {
+
+        expenses = JSON.parse(savedExpenses);
+    }
+
+
+    
+    updatePage();
+}
+
+function formatMoney(amount) {
+
+    return amount.toLocaleString("no-NO") + " kr";
+}
+
 function addIncome() {
 
-
-    /*
-        Henter det brukeren har skrevet
-        i feltet med id "incomeName".
-    */
+    
     const name =
-        document.getElementById("incomeName").value;
+        document.getElementById("incomeName")
+        .value
+        .trim();
+    const category =
+        document.getElementById("incomeCategory")
+        .value;
 
 
-    /*
-        Henter beløpet brukeren har skrevet.
-
-        Number() gjør teksten om til et tall.
-        Dette er viktig fordi vi senere skal regne
-        med beløpet.
-    */
+    
     const amount =
-        Number(document.getElementById("incomeAmount").value);
+        Number(
+            document.getElementById("incomeAmount")
+            .value
+        );
+    if (name === "") {
 
+        alert("Skriv inn navnet på inntekten.");
+
+        return;
+    }
 
 
     /*
-        Sjekker om brukeren har skrevet inn
-        navn og et gyldig beløp.
-
-        === "" betyr at feltet er tomt.
-
-        amount <= 0 betyr at beløpet er 0
-        eller mindre.
+        Sjekker om beløpet er gyldig.
     */
-    if (name === "" || amount <= 0) {
+    if (amount <= 0 || isNaN(amount)) {
 
-        /*
-            Viser en melding til brukeren.
-        */
-        alert("Skriv inn navn og et gyldig beløp.");
+        alert("Skriv inn et gyldig beløp.");
 
-        /*
-            Stopper funksjonen.
-        */
         return;
     }
 
 
 
     /*
-        Legger den nye inntekten inn i
-        incomes-listen.
-
-        push() legger noe til i listen.
+        Lager en ny inntekt.
     */
-    incomes.push({
+    const income = {
 
-        /* Navnet på inntekten */
+        /*
+            ID brukes når vi skal slette
+            en bestemt inntekt.
+        */
+        id: Date.now(),
+
         name: name,
 
-        /* Beløpet */
-        amount: amount
-    });
+        category: category,
 
+        amount: amount
+    };
 
 
     /*
-        Tømmer navnefeltet etter at
-        inntekten er lagt til.
+        Legger inntekten til listen.
+    */
+    incomes.push(income);
+
+
+    /*
+        Lagrer den nye informasjonen.
+    */
+    saveData();
+
+
+    /*
+        Tømmer input-feltene.
     */
     document.getElementById("incomeName").value = "";
 
-
-    /*
-        Tømmer beløpsfeltet.
-    */
     document.getElementById("incomeAmount").value = "";
 
 
-
     /*
-        Oppdaterer nettsiden slik at
-        den nye inntekten vises.
+        Oppdaterer nettsiden.
     */
     updatePage();
 }
 
 
 
+/* =====================================
+   LEGG TIL UTGIFT
+===================================== */
+
 
 /*
-    Denne funksjonen fungerer på samme måte
-    som addIncome(), men brukes til utgifter.
+    Denne funksjonen kjører når brukeren
+    trykker på "Legg til utgift".
 */
 function addExpense() {
 
-
-    /*
-        Henter navnet på utgiften.
-    */
     const name =
-        document.getElementById("expenseName").value;
+        document.getElementById("expenseName")
+        .value
+        .trim();
 
 
-    /*
-        Henter beløpet og gjør det om til et tall.
-    */
+    const category =
+        document.getElementById("expenseCategory")
+        .value;
+
+
     const amount =
-        Number(document.getElementById("expenseAmount").value);
-
+        Number(
+            document.getElementById("expenseAmount")
+            .value
+        );
 
 
     /*
-        Sjekker om brukeren har skrevet
-        inn riktig informasjon.
+        Sjekker at navnet er fylt ut.
     */
-    if (name === "" || amount <= 0) {
+    if (name === "") {
 
-        alert("Skriv inn navn og et gyldig beløp.");
+        alert("Skriv inn navnet på utgiften.");
+
+        return;
+    }
+
+
+    /*
+        Sjekker at beløpet er gyldig.
+    */
+    if (amount <= 0 || isNaN(amount)) {
+
+        alert("Skriv inn et gyldig beløp.");
 
         return;
     }
@@ -140,28 +195,69 @@ function addExpense() {
 
 
     /*
-        Legger utgiften inn i expenses-listen.
+        Lager en ny utgift.
     */
-    expenses.push({
+    const expense = {
+
+        id: Date.now(),
 
         name: name,
 
-        amount: amount
-    });
+        category: category,
 
+        amount: amount
+    };
 
 
     /*
-        Tømmer navnefeltet.
+        Legger utgiften til listen.
+    */
+    expenses.push(expense);
+
+
+    /*
+        Lagrer utgiften i nettleseren.
+    */
+    saveData();
+
+
+    /*
+        Tømmer input-feltene.
     */
     document.getElementById("expenseName").value = "";
 
-
-    /*
-        Tømmer beløpsfeltet.
-    */
     document.getElementById("expenseAmount").value = "";
 
+
+    /*
+        Oppdaterer nettsiden.
+    */
+    updatePage();
+}
+
+
+
+/* =====================================
+   SLETT INNTEKT
+===================================== */
+
+
+function deleteIncome(id) {
+
+    /*
+        Fjerner inntekten med riktig ID.
+    */
+    incomes = incomes.filter(function (income) {
+
+        return income.id !== id;
+
+    });
+
+
+    /*
+        Lagrer endringen.
+    */
+    saveData();
 
 
     /*
@@ -172,151 +268,236 @@ function addExpense() {
 
 
 
+/* =====================================
+   SLETT UTGIFT
+===================================== */
+
+
+function deleteExpense(id) {
+
+    /*
+        Fjerner utgiften med riktig ID.
+    */
+    expenses = expenses.filter(function (expense) {
+
+        return expense.id !== id;
+
+    });
+
+
+    /*
+        Lagrer endringen.
+    */
+    saveData();
+
+
+    /*
+        Oppdaterer siden.
+    */
+    updatePage();
+}
+
+
+
+/* =====================================
+   OPPDATER SIDEN
+===================================== */
+
 
 /*
-    Denne funksjonen oppdaterer informasjonen
-    som vises på nettsiden.
-
-    Den:
-    - regner ut totale inntekter
-    - regner ut totale utgifter
-    - regner ut saldo
-    - viser inntektene
-    - viser utgiftene
-    - gjør saldoen rød hvis den er negativ
+    Denne funksjonen regner ut alle
+    tallene og viser dem på nettsiden.
 */
 function updatePage() {
 
-
     /*
-        Vi starter med 0 kr i inntekter.
+        Starter totalsummene på 0.
     */
     let totalIncome = 0;
 
-
-    /*
-        Vi starter med 0 kr i utgifter.
-    */
     let totalExpenses = 0;
 
 
 
     /*
-        Går gjennom alle inntektene
-        som ligger i incomes-listen.
+        Legger sammen alle inntektene.
     */
     for (let income of incomes) {
 
-        /*
-            Legger hver inntekt sammen.
-        */
         totalIncome += income.amount;
     }
 
 
 
     /*
-        Går gjennom alle utgiftene.
+        Legger sammen alle utgiftene.
     */
     for (let expense of expenses) {
 
-        /*
-            Legger alle utgiftene sammen.
-        */
         totalExpenses += expense.amount;
     }
 
 
 
     /*
-        Regner ut hvor mye penger brukeren har igjen.
+        Regner ut månedlig saldo.
 
-        Inntekter - utgifter = saldo
+        INNTEKTER - UTGIFTER = SALDO
     */
-    const balance = totalIncome - totalExpenses;
+    const balance =
+        totalIncome - totalExpenses;
 
 
 
     /*
-        Finner HTML-elementet som viser
-        totale inntekter.
+        Viser total inntekt.
     */
-    document.getElementById("totalIncome").textContent =
-
-        /*
-            toLocaleString gjør at tallet
-            får norsk skrivemåte.
-
-            25000 blir for eksempel 25 000.
-        */
-        totalIncome.toLocaleString("no-NO") + " kr";
+    document.getElementById("totalIncome")
+        .textContent =
+        formatMoney(totalIncome);
 
 
 
     /*
         Viser totale utgifter.
     */
-    document.getElementById("totalExpenses").textContent =
-
-        totalExpenses.toLocaleString("no-NO") + " kr";
-
-
-
-    /*
-        Viser saldoen.
-    */
-    document.getElementById("balance").textContent =
-
-        balance.toLocaleString("no-NO") + " kr";
+    document.getElementById("totalExpenses")
+        .textContent =
+        formatMoney(totalExpenses);
 
 
 
     /*
-        Finner elementet som viser saldoen.
+        Viser saldo.
     */
     const balanceElement =
         document.getElementById("balance");
 
 
+    balanceElement.textContent =
+        formatMoney(balance);
+
+
 
     /*
-        Sjekker om saldoen er mindre enn 0.
+        Fjerner gamle farger.
+    */
+    balanceElement.classList.remove(
+        "negative",
+        "positive"
+    );
+
+
+
+    /*
+        Hvis brukeren er i minus,
+        blir saldoen rød.
     */
     if (balance < 0) {
 
+        balanceElement.classList.add(
+            "negative"
+        );
 
-        /*
-            Hvis saldoen er negativ,
-            legger vi til CSS-klassen "negative".
+        document.getElementById(
+            "balanceMessage"
+        ).textContent =
+            "Du bruker mer penger enn du får inn.";
 
-            CSS gjør da saldoen rød.
-        */
-        balanceElement.classList.add("negative");
-
-    } else {
+    }
 
 
-        /*
-            Hvis saldoen ikke er negativ,
-            fjerner vi den røde klassen.
-        */
-        balanceElement.classList.remove("negative");
+    /*
+        Hvis brukeren har penger igjen,
+        blir saldoen grønn.
+    */
+    else if (balance > 0) {
+
+        balanceElement.classList.add(
+            "positive"
+        );
+
+        document.getElementById(
+            "balanceMessage"
+        ).textContent =
+            "Du har penger igjen denne måneden.";
+
+    }
+
+
+    /*
+        Hvis saldoen er akkurat 0.
+    */
+    else {
+
+        document.getElementById(
+            "balanceMessage"
+        ).textContent =
+            "Inntekter og utgifter er like store.";
     }
 
 
 
     /*
-        Finner listen over inntekter i HTML.
+        Viser inntektene.
     */
-    const incomeList =
+    renderIncomeList();
+
+
+    /*
+        Viser utgiftene.
+    */
+    renderExpenseList();
+}
+
+
+
+/* =====================================
+   VIS INNTEKTER
+===================================== */
+
+
+function renderIncomeList() {
+
+    /*
+        Finner listen i HTML.
+    */
+    const list =
         document.getElementById("incomeList");
 
 
     /*
-        Tømmer listen før vi legger
-        inntektene inn på nytt.
+        Tømmer listen før vi lager
+        den på nytt.
     */
-    incomeList.innerHTML = "";
+    list.innerHTML = "";
+
+
+    /*
+        Finner meldingen om at listen
+        er tom.
+    */
+    const emptyMessage =
+        document.getElementById("emptyIncome");
+
+
+    /*
+        Hvis det ikke finnes inntekter,
+        viser vi meldingen.
+    */
+    if (incomes.length === 0) {
+
+        emptyMessage.style.display = "block";
+
+        return;
+    }
+
+
+    /*
+        Skjuler meldingen når det
+        finnes inntekter.
+    */
+    emptyMessage.style.display = "none";
 
 
 
@@ -325,48 +506,144 @@ function updatePage() {
     */
     for (let income of incomes) {
 
-
         /*
-            Lager et nytt <li>-element.
+            Lager et nytt listeelement.
         */
-        const li = document.createElement("li");
+        const li =
+            document.createElement("li");
 
+        li.className = "money-item";
 
-        /*
-            Setter teksten som skal vises.
-
-            Eksempel:
-            Lønn – 25 000 kr
-        */
-        li.textContent =
-
-            income.name + " – " +
-
-            income.amount.toLocaleString("no-NO") +
-
-            " kr";
 
 
         /*
-            Legger det nye elementet
-            inn i inntektslisten.
+            Lager området med navn
+            og kategori.
         */
-        incomeList.appendChild(li);
+        const info =
+            document.createElement("div");
+
+        info.className = "money-info";
+
+
+        const name =
+            document.createElement("div");
+
+        name.className = "money-name";
+
+        name.textContent =
+            income.name;
+
+
+        const category =
+            document.createElement("div");
+
+        category.className = "money-category";
+
+        category.textContent =
+            income.category;
+
+
+        info.appendChild(name);
+
+        info.appendChild(category);
+
+
+
+        /*
+            Lager beløpet.
+        */
+        const amount =
+            document.createElement("span");
+
+        amount.className = "money-amount";
+
+        amount.textContent =
+            formatMoney(income.amount);
+
+
+
+        /*
+            Lager slett-knappen.
+        */
+        const deleteButton =
+            document.createElement("button");
+
+        deleteButton.className =
+            "delete-button";
+
+        deleteButton.textContent =
+            "Slett";
+
+        deleteButton.type =
+            "button";
+
+
+
+        /*
+            Når knappen trykkes,
+            slettes inntekten.
+        */
+        deleteButton.addEventListener(
+            "click",
+            function () {
+
+                deleteIncome(income.id);
+
+            }
+        );
+
+
+
+        /*
+            Legger alt inn i listeelementet.
+        */
+        li.appendChild(info);
+
+        li.appendChild(amount);
+
+        li.appendChild(deleteButton);
+
+
+        /*
+            Legger elementet inn i listen.
+        */
+        list.appendChild(li);
     }
+}
 
 
 
-    /*
-        Finner listen over utgifter.
-    */
-    const expenseList =
+/* =====================================
+   VIS UTGIFTER
+===================================== */
+
+
+function renderExpenseList() {
+
+    const list =
         document.getElementById("expenseList");
 
 
+    list.innerHTML = "";
+
+
+    const emptyMessage =
+        document.getElementById("emptyExpense");
+
+
     /*
-        Tømmer utgiftslisten.
+        Hvis listen er tom.
     */
-    expenseList.innerHTML = "";
+    if (expenses.length === 0) {
+
+        emptyMessage.style.display = "block";
+
+        return;
+    }
+
+
+    emptyMessage.style.display = "none";
 
 
 
@@ -375,31 +652,161 @@ function updatePage() {
     */
     for (let expense of expenses) {
 
+        const li =
+            document.createElement("li");
+
+        li.className = "money-item";
+
+
+
+        const info =
+            document.createElement("div");
+
+        info.className = "money-info";
+
+
+        const name =
+            document.createElement("div");
+
+        name.className = "money-name";
+
+        name.textContent =
+            expense.name;
+
+
+        const category =
+            document.createElement("div");
+
+        category.className = "money-category";
+
+        category.textContent =
+            expense.category;
+
+
+        info.appendChild(name);
+
+        info.appendChild(category);
+
+
 
         /*
-            Lager et nytt listeelement.
+            Viser beløpet.
         */
-        const li = document.createElement("li");
+        const amount =
+            document.createElement("span");
+
+        amount.className = "money-amount";
+
+        amount.textContent =
+            formatMoney(expense.amount);
+
 
 
         /*
-            Lager teksten som skal vises.
-
-            Eksempel:
-            Mat – 3 500 kr
+            Lager slett-knappen.
         */
-        li.textContent =
+        const deleteButton =
+            document.createElement("button");
 
-            expense.name + " – " +
+        deleteButton.className =
+            "delete-button";
 
-            expense.amount.toLocaleString("no-NO") +
+        deleteButton.textContent =
+            "Slett";
 
-            " kr";
+        deleteButton.type =
+            "button";
 
 
-        /*
-            Legger utgiften inn på nettsiden.
-        */
-        expenseList.appendChild(li);
+
+        deleteButton.addEventListener(
+            "click",
+            function () {
+
+                deleteExpense(expense.id);
+
+            }
+        );
+
+
+
+        li.appendChild(info);
+
+        li.appendChild(amount);
+
+        li.appendChild(deleteButton);
+
+
+        list.appendChild(li);
     }
 }
+
+
+
+/* =====================================
+   UTSKRIFT
+===================================== */
+
+
+/*
+    Når brukeren trykker på
+    "Skriv ut budsjett",
+    åpnes nettleserens utskriftsvindu.
+*/
+function printBudget() {
+
+    window.print();
+}
+
+
+
+/* =====================================
+   KNAPPER
+===================================== */
+
+
+/*
+    Kobler knappen "Legg til inntekt"
+    til addIncome-funksjonen.
+*/
+document
+    .getElementById("addIncomeButton")
+    .addEventListener(
+        "click",
+        addIncome
+    );
+
+
+/*
+    Kobler knappen "Legg til utgift"
+    til addExpense-funksjonen.
+*/
+document
+    .getElementById("addExpenseButton")
+    .addEventListener(
+        "click",
+        addExpense
+    );
+
+
+/*
+    Kobler utskriftsknappen
+    til printBudget-funksjonen.
+*/
+document
+    .getElementById("printButton")
+    .addEventListener(
+        "click",
+        printBudget
+    );
+
+
+
+/* =====================================
+   START
+===================================== */
+/*
+    Når nettsiden åpnes,
+    hentes tidligere lagrede data.
+*/
+loadData();

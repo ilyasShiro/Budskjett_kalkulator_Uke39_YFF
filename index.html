@@ -1,109 +1,269 @@
 <!DOCTYPE html>
 <html lang="no">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Min Økonomi</title>
-
+    <title>Min økonomi</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 
 <body>
 
     <header>
-        <h1>Min Økonomi</h1>
-        <p>Få oversikt over inntektene og utgiftene dine</p>
+        <h1>Min økonomi</h1>
+
+        <p>
+            Få oversikt over inntektene og utgiftene dine
+        </p>
     </header>
+
 
     <main>
 
+        <!-- =====================================
+             LEGG TIL INNTEKT
+        ====================================== -->
+
+        <section class="card">
+
+            <h2>Legg til inntekt</h2>
+
+            <!-- Label forteller brukeren hva feltet er -->
+            <label for="incomeName">
+                Navn på inntekt
+            </label>
+
+            <input
+                type="text"
+                id="incomeName"
+                placeholder="F.eks. Lønn"
+            >
+
+
+            <label for="incomeCategory">
+                Type inntekt
+            </label>
+
+            <select id="incomeCategory">
+
+                <option value="Lønn">
+                    Lønn
+                </option>
+
+                <option value="Stipend">
+                    Stipend
+                </option>
+
+                <option value="Bidrag">
+                    Bidrag
+                </option>
+
+                <option value="Annet">
+                    Annet
+                </option>
+
+            </select>
+
+
+            <label for="incomeAmount">
+                Beløp
+            </label>
+
+            <input
+                type="number"
+                id="incomeAmount"
+                placeholder="F.eks. 25000"
+                min="0"
+            >
+
+            <!-- Knapp som legger til inntekten -->
+            <button id="addIncomeButton">
+                Legg til inntekt
+            </button>
+
+        </section>
+
+        <!-- =====================================
+             LEGG TIL UTGIFT
+        ====================================== -->
+        <section class="card">
+
+            <h2>Legg til utgift</h2>
+
+            <label for="expenseName">
+                Navn på utgift
+            </label>
+
+            <input
+                type="text"
+                id="expenseName"
+                placeholder="F.eks. Mat"
+            >
+
+
+            <label for="expenseCategory">
+                Type utgift
+            </label>
+
+            <select id="expenseCategory">
+
+                <option value="Mat">
+                    Mat
+                </option>
+
+                <option value="Bolig">
+                    Bolig
+                </option>
+
+                <option value="Transport">
+                    Transport
+                </option>
+
+                <option value="Fritid">
+                    Fritid
+                </option>
+
+                <option value="Abonnement">
+                    Abonnement
+                </option>
+
+                <option value="Lån">
+                    Lån
+                </option>
+
+                <option value="Klær">
+                    Klær
+                </option>
+
+                <option value="Annet">
+                    Annet
+                </option>
+
+            </select>
+
+
+            <label for="expenseAmount">
+                Beløp
+            </label>
+
+            <input
+                type="number"
+                id="expenseAmount"
+                placeholder="F.eks. 3500"
+                min="0"
+            >
+
+            <!-- Knapp som legger til utgiften -->
+            <button
+                id="addExpenseButton"
+                class="expense-button"
+            >
+                Legg til utgift
+            </button>
+
+        </section>
+        <!-- =====================================
+             OPPSUMMERING
+        ====================================== -->
         <section class="summary">
 
-            <div class="summary-card">
-                <h2>Inntekter</h2>
-                <p id="totalIncome">0 kr</p>
-            </div>
+            <div class="summary-box">
+                <h3>Totale inntekter</h3>
 
-            <div class="summary-card">
-                <h2>Utgifter</h2>
-                <p id="totalExpenses">0 kr</p>
-            </div>
-
-            <div class="summary-card balance-card">
-                <h2>Saldo</h2>
-                <p id="balance">0 kr</p>
-            </div>
-
-        </section>
-
-
-        <section class="forms">
-
-            <div class="form-card">
-
-                <h2>Legg til inntekt</h2>
-
-                <input
-                    type="text"
-                    id="incomeName"
-                    placeholder="F.eks. Lønn"
-                >
-
-                <input
-                    type="number"
-                    id="incomeAmount"
-                    placeholder="Beløp"
-                >
-
-                <button onclick="addIncome()">
-                    Legg til inntekt
-                </button>
-
+                <p id="totalIncome">
+                    0 kr
+                </p>
             </div>
 
 
-            <div class="form-card">
+            <div class="summary-box">
+                <h3>Totale utgifter</h3>
 
-                <h2>Legg til utgift</h2>
+                <p id="totalExpenses">
+                    0 kr
+                </p>
+            </div>
 
-                <input
-                    type="text"
-                    id="expenseName"
-                    placeholder="F.eks. Mat"
-                >
 
-                <input
-                    type="number"
-                    id="expenseAmount"
-                    placeholder="Beløp"
-                >
+            <div
+                class="summary-box"
+                id="balanceBox"
+            >
 
-                <button onclick="addExpense()">
-                    Legg til utgift
-                </button>
+                <h3>Månedlig saldo</h3>
+
+                <p id="balance">
+                    0 kr
+                </p>
+
+                <span id="balanceMessage">
+                    Legg inn inntekter og utgifter.
+                </span>
 
             </div>
 
         </section>
 
 
-        <section class="lists">
 
-            <div class="list-card">
 
-                <h2>Inntekter</h2>
+        <section
+            class="card budget"
+            id="budget"
+        >
 
+            <div class="budget-header">
+
+                <div>
+                    <h2>Budsjettoversikt</h2>
+
+                    <p>
+                        Her ser du alle inntektene og utgiftene dine.
+                    </p>
+                </div>
+
+
+               
+                <button
+                    id="printButton"
+                    class="print-button"
+                >
+                    Skriv ut budsjett
+                </button>
+
+            </div>
+
+            <div class="list-section">
+
+                <h3>Inntekter</h3>
+
+            
                 <ul id="incomeList"></ul>
 
+                <p
+                    id="emptyIncome"
+                    class="empty-message"
+                >
+                    Ingen inntekter lagt til ennå.
+                </p>
+
             </div>
 
+            <div class="list-section">
 
-            <div class="list-card">
+                <h3>Utgifter</h3>
 
-                <h2>Utgifter</h2>
-
+               
                 <ul id="expenseList"></ul>
+
+                <p
+                    id="emptyExpense"
+                    class="empty-message"
+                >
+                    Ingen utgifter lagt til ennå.
+                </p>
 
             </div>
 
@@ -112,7 +272,11 @@
     </main>
 
 
+    <footer>
+        <p>Min økonomi</p>
+    </footer>
     <script src="script.js"></script>
 
 </body>
+
 </html>

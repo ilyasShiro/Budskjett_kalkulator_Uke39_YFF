@@ -25,3 +25,4 @@ For eksempel, hvis jeg får 25 000 kr i inntekt og har 18 000 kr** i utgifter, r
 Da har brukeren 7 000 kr igjen etter at alle utgiftene er trukket fra.
 
 Hvis utgiftene derimot er høyere enn inntektene, vil saldoen bli negativ. Da vises beløpet med rødt, slik at brukeren raskt kan se at de har brukt mer penger enn de har fått inn.
+nå har gjort sånn at nå blir det lagret hvis du refresher siden og at du kan skrive ut filen som en pdf.
